@@ -34,6 +34,7 @@ export default function Board(props: BoardProps) {
     },
     [xIsNext, squares, onPlay]
   );
+
   const winner = calculateWinner(squares);
   let status: string | null;
   if (winner) {

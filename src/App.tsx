@@ -1,21 +1,30 @@
 import Board from "./components/Board";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 
 export default function Game() {
-  const [xIsNext, setXIsNext] = useState(true);
+  // const [xIsNext, setXIsNext] = useState(true);
   const [history, setHistory] = useState([Array(9).fill(null)]);
-  const currentSquares = history[history.length - 1];
-  // console.log(history);
+  const [currentMove, setCurrentMove] = useState(0);
+  const xIsNext = currentMove % 2 === 0;
+  const currentSquares = history[currentMove];
+  console.log(history);
   // console.log(currentSquares);
 
-  function handlePlay(nextSquares: string[]): void {
-    setHistory([...history, nextSquares]);
-    setXIsNext(!xIsNext);
-  }
+  const handlePlay = useCallback(
+    (nextSquares: string[]) => {
+      const nextHistory = [...history.slice(0, currentMove + 1), nextSquares];
+      setHistory(nextHistory);
+      setCurrentMove(nextHistory.length - 1);
+      // setXIsNext(!xIsNext);
+      console.log(nextHistory);
+    },
+    [history, currentMove]
+  );
 
-  function jumpTo(nextMove) {
-    //...
-  }
+  const jumpTo = useCallback((nextMove: number) => {
+    setCurrentMove(nextMove);
+    // setXIsNext(nextMove % 2 === 0);
+  }, []);
 
   const moves = history.map((squares, index) => {
     let description: string;
